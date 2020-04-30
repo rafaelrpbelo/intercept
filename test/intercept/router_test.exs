@@ -50,4 +50,22 @@ defmodule Intercept.RouterTest do
     assert response.state == :sent
     assert response.status == 200
   end
+
+  test "returns conn's properies in response body" do
+    response =
+      conn(:get, "/asdf", "")
+      |> Router.call(@init)
+
+    assert response.status == 200
+
+    expected_content = [
+      ~r/request_path => "\/asdf"/,
+      ~r/method => "GET"/,
+      ~r/host => "www.example.com"/,
+    ]
+
+    for content <- expected_content do
+      assert String.match?(response.resp_body, content)
+    end
+  end
 end
