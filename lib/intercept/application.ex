@@ -4,7 +4,12 @@ defmodule Intercept.Application do
 
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Intercept.Plug, options: [port: 5000]}
+      {
+        Plug.Cowboy,
+        scheme: :http,
+        plug: Intercept.Router,
+        options: [port: application_port()]
+      }
     ]
 
     opts = [strategy: :one_for_one, name: Intercept.Supervisor]
@@ -13,4 +18,6 @@ defmodule Intercept.Application do
 
     Supervisor.start_link(children, opts)
   end
+
+  defp application_port, do: Application.get_env(:intercept, :port, 5000)
 end
