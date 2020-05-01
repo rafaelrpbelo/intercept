@@ -1,3 +1,3 @@
-use Mix.Config
+import Config
 
 # development settings goes here ...
