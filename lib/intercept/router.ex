@@ -4,6 +4,7 @@ defmodule Intercept.Router do
   alias Intercept.ConnFormatter
 
   plug :match
+  plug Plug.Logger, log: :info
   plug :dispatch
 
   match _ do
