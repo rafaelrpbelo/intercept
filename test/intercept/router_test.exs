@@ -57,15 +57,6 @@ defmodule Intercept.RouterTest do
       |> Router.call(@init)
 
     assert response.status == 200
-
-    expected_content = [
-      ~r/request_path => "\/asdf"/,
-      ~r/method => "GET"/,
-      ~r/host => "www.example.com"/,
-    ]
-
-    for content <- expected_content do
-      assert String.match?(response.resp_body, content)
-    end
+    assert String.match?(response.resp_body, ~r/request_path => "\/asdf"/)
   end
 end
