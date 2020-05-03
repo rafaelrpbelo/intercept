@@ -22,7 +22,8 @@ defmodule Intercept.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-       {:plug_cowboy, "~> 2.2.1"}
+      {:plug_cowboy, "~> 2.2.1"},
+      {:bamboo, "~> 1.4"}
     ]
   end
 end

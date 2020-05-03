@@ -1,6 +1,7 @@
 defmodule Intercept.RouterTest do
   use ExUnit.Case, async: true
   use Plug.Test
+  use Bamboo.Test
 
   alias Intercept.Router
 
@@ -58,5 +59,15 @@ defmodule Intercept.RouterTest do
 
     assert response.status == 200
     assert String.match?(response.resp_body, ~r/request_path => "\/asdf"/)
+  end
+
+  test "returns conn's properies via email" do
+    conn(:get, "/asdf", "") |> Router.call(@init)
+
+    assert_email_delivered_with(
+      from: "support@myapp.com",
+      to: [nil: "john@example.com"],
+      subject: "[INTERCEPT] Got a new notification"
+    )
   end
 end

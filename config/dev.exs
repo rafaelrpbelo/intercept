@@ -1,3 +1,4 @@
 import Config
 
-# development settings goes here ...
+config :intercept, Intercept.Mailer,
+  adapter: Bamboo.LocalAdapter
