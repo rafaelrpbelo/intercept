@@ -70,4 +70,20 @@ defmodule Intercept.RouterTest do
       subject: "[INTERCEPT] Got a new notification"
     )
   end
+
+  @irrelevnt_paths [
+    {:get, "/favicon.ico"},
+    {:get, "/robots.txt"}
+  ]
+  test "returns 404 for some irrelevant paths" do
+    for {verb, path} <- @irrelevnt_paths do
+      response =
+        conn(verb, path, "")
+        |> Router.call(@init)
+
+      assert response.status == 404
+      assert response.resp_body == "Not found"
+      assert response.halted == true
+    end
+  end
 end
