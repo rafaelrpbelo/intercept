@@ -23,7 +23,8 @@ defmodule Intercept.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 2.2.1"},
-      {:bamboo, "~> 1.4"}
+      {:bamboo, "~> 1.4"},
+      {:bamboo_smtp, "~> 2.1.0"},
     ]
   end
 end
