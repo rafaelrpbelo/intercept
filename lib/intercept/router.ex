@@ -8,11 +8,13 @@ defmodule Intercept.Router do
   plug Plug.Logger, log: :info
   plug :dispatch
 
+  get "/robots.txt" do
+    send_resp(conn, 200, "User-agent: *\nDisallow: /") |> halt
+  end
+
   @ignore_paths [
     {:get, "/favicon.ico"},
-    {:get, "/robots.txt"},
   ]
-
   for {verb, path} <- @ignore_paths do
     match path, via: verb do
       send_resp(conn, 404, "Not found") |> halt

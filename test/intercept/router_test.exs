@@ -71,19 +71,23 @@ defmodule Intercept.RouterTest do
     )
   end
 
-  @irrelevnt_paths [
-    {:get, "/favicon.ico"},
-    {:get, "/robots.txt"}
-  ]
-  test "returns 404 for some irrelevant paths" do
-    for {verb, path} <- @irrelevnt_paths do
-      response =
-        conn(verb, path, "")
-        |> Router.call(@init)
+  test "GET /robots.txt responds with status 200 and SEO settings" do
+    response =
+      conn(:get, "/robots.txt", "")
+      |> Router.call(@init)
 
-      assert response.status == 404
-      assert response.resp_body == "Not found"
-      assert response.halted == true
-    end
+    assert response.status == 200
+    assert response.resp_body == "User-agent: *\nDisallow: /"
+    assert response.halted == true
+  end
+
+  test "GET /favicon.ico returns 404" do
+    response =
+      conn(:get, "/favicon.ico", "")
+      |> Router.call(@init)
+
+    assert response.status == 404
+    assert response.resp_body == "Not found"
+    assert response.halted == true
   end
 end
