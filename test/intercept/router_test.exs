@@ -71,6 +71,18 @@ defmodule Intercept.RouterTest do
     )
   end
 
+  test "set subject according to the given subject param" do
+    conn(:get, "/asdf", [abc: "123", subject: "My subject"])
+    |> Router.call(@init)
+
+    assert_email_delivered_with(
+      from: "support@myapp.com",
+      to: [nil: "john@example.com"],
+      subject: "[INTERCEPT] My subject"
+    )
+  end
+
+
   test "GET /robots.txt responds with status 200 and SEO settings" do
     response =
       conn(:get, "/robots.txt", "")

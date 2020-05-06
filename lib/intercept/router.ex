@@ -22,9 +22,15 @@ defmodule Intercept.Router do
   end
 
   match _ do
+    conn = Plug.Conn.fetch_query_params(conn)
     formatted_body = ConnFormatter.format(conn)
 
-    Email.notify(formatted_body) |> Mailer.deliver_now()
+    case conn.params do
+      %{"subject" => subject } ->
+        Email.notify(formatted_body, subject) |> Mailer.deliver_now()
+      %{} ->
+        Email.notify(formatted_body) |> Mailer.deliver_now()
+    end
 
     send_resp(conn, 200, formatted_body)
   end
