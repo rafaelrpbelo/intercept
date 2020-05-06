@@ -3,8 +3,13 @@ defmodule Intercept.ConnFormatterTest do
 
   alias Intercept.ConnFormatter
 
+  defp default_conn() do
+    %Plug.Conn{host: "www.test.com.br"}
+    |> Plug.Adapters.Test.Conn.conn("GET", "/asdf", "")
+  end
+
   test ".format receives a %Plug.Conn{}" do
-    assert ConnFormatter.format(%Plug.Conn{})
+    assert ConnFormatter.format(default_conn())
   end
 
   test ".format raises InvalidInput if other argument is given" do
@@ -14,9 +19,7 @@ defmodule Intercept.ConnFormatterTest do
   end
 
   test ".format returns a string with Plug.Conn's content" do
-    formatted_body =
-      %Plug.Conn{host: "www.test.com.br", request_path: "/asdf", method: "GET"}
-      |> ConnFormatter.format
+    formatted_body = default_conn() |> ConnFormatter.format
 
     matches = [
       ~r/request_path => "\/asdf"/,

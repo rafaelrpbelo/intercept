@@ -8,8 +8,13 @@ defmodule Intercept.ConnFormatter do
     defexception message: "A %Plug.Conn{} must be given"
   end
 
+  defmodule ParseBodyError do
+    defexception message: "Error while parsing request body"
+  end
+
   def format(%Plug.Conn{} = conn) do
     conn
+      |> fetch_body
       |> Map.from_struct
       |> Enum.reject(&skip_attributes(&1))
       |> Enum.map_join("\n", &(format_key_values(&1)))
@@ -28,4 +33,15 @@ defmodule Intercept.ConnFormatter do
   defp format_key_values({key, value}) do
     "#{key} => #{inspect(value)}"
   end
+
+  defp fetch_body(%Plug.Conn{body_params: %Plug.Conn.Unfetched{}} = conn) do
+    conn
+    |> Plug.Conn.read_body
+    |> case do
+      {:ok, body, _} -> %{conn | body_params: body}
+      _ -> raise ParseBodyError
+    end
+  end
+  defp fetch_body(%Plug.Conn{} = conn), do: conn
+  defp fetch_body(_), do: raise ParseBodyError
 end
