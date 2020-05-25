@@ -30,6 +30,9 @@ defmodule Intercept.ConnFormatter do
     if key in @skip_attributes, do: true, else: false
   end
 
+  defp format_key_values({:req_headers, values}) when is_list(values) do
+    Enum.map_join(values, "\n", fn {header, value} -> "req_headers[#{header}] => #{value}" end)
+  end
   defp format_key_values({key, value}) do
     "#{key} => #{inspect(value)}"
   end

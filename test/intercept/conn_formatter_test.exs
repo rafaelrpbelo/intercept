@@ -18,6 +18,15 @@ defmodule Intercept.ConnFormatterTest do
     end
   end
 
+  test ".format expands req.headers" do
+    formatted_body =
+      default_conn()
+      |> Map.replace!(:req_headers, [{"some-header", "some-value"}])
+      |> ConnFormatter.format
+
+    assert String.match?(formatted_body, ~r/req_headers\[some-header\] => some-value/)
+  end
+
   test ".format returns a string with Plug.Conn's content" do
     formatted_body = default_conn() |> ConnFormatter.format
 
