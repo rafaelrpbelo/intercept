@@ -82,7 +82,6 @@ defmodule Intercept.RouterTest do
     )
   end
 
-
   test "GET /robots.txt responds with status 200 and SEO settings" do
     response =
       conn(:get, "/robots.txt", "")
