@@ -1,0 +1,26 @@
+FROM elixir:1.10.1
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update package control
+RUN apt-get -y update
+
+# Install Hex
+RUN mix local.hex --force
+
+# Create app folder
+RUN mkdir /app
+COPY . /app
+WORKDIR /app
+
+# Setting the port and the environment
+ENV MIX_ENV=prod
+ENV PORT=4000
+
+# Install Rebar
+RUN mix local.rebar --force
+RUN mix deps.get --only prod
+RUN mix compile
+
+# Run app
+CMD mix run
