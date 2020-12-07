@@ -4,4 +4,4 @@ build:
   config:
     MIX_ENV: prod
 run:
-  web: mix app.start
+  web: _build/prod/rel/intercept/bin/intercept start

@@ -22,5 +22,7 @@ RUN mix local.rebar --force
 RUN mix deps.get --only prod
 RUN mix compile
 
-# Run app
-CMD mix run
+# Releasing...
+RUN mix release
+
+CMD _build/prod/rel/intercept/bin/intercept start
