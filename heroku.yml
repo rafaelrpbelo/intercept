@@ -4,4 +4,4 @@ build:
   config:
     MIX_ENV: prod
 run:
-  web: mix run
+  web: mix app.start
