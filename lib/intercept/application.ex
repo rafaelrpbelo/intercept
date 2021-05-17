@@ -15,6 +15,7 @@ defmodule Intercept.Application do
     opts = [strategy: :one_for_one, name: Intercept.Supervisor]
 
     Logger.info("Starting application...")
+    Logger.info("Listening port #{application_port}")
 
     Supervisor.start_link(children, opts)
   end
